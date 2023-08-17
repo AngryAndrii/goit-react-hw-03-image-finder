@@ -13,9 +13,11 @@ export class App extends Component {
     images: '',
   };
 
-  changeQuery = evt => {
-    evt.preventDefault();
-    console.log('queryChange');
+  changeQuery = query => {
+    console.log(query);
+    this.setState({
+      query: query,
+    });
   };
 
   render() {

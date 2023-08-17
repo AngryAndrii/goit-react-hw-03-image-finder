@@ -13,12 +13,24 @@ export class Searchbar extends Component {
     });
   };
 
+  makeQuery = event => {
+    event.preventDefault();
+    this.props.changeQuery(this.state.inputValue);
+  };
+
   render() {
-    const { changeQuery } = this.props;
     return (
-      <StyledForm onSubmit={changeQuery}>
-        <input type="text" onChange={this.handleChangeInput} />
-        <button type="submit">Search</button>
+      <StyledForm onSubmit={this.makeQuery}>
+        <input
+          type="text"
+          autoComplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          onChange={this.handleChangeInput}
+        />
+        <button type="submit">
+          <span>Search</span>
+        </button>
       </StyledForm>
     );
   }
