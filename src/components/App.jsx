@@ -7,12 +7,14 @@ import { Layout } from './Layout.styled';
 // import { Modal } from './Modal/Modal';
 import { Searchbar } from './Searchbar/Searchbar';
 import axios from 'axios';
+import { Grid } from 'react-loader-spinner';
 
 export class App extends Component {
   state = {
     query: '',
     images: [],
     page: 1,
+    loading: false,
   };
 
   //cat&page=1&key=${key}&image_type=photo&orientation=horizontal&per_page=12`,
@@ -22,6 +24,9 @@ export class App extends Component {
       this.state.page !== prevState.page ||
       this.state.query !== prevState.query
     ) {
+      this.setState({
+        loading: true,
+      });
       this.start();
     }
   }
@@ -46,17 +51,32 @@ export class App extends Component {
     console.log(resp.data);
     this.setState({
       images: [...this.state.images, ...resp.data.hits],
+      loading: false,
     });
-    // this.setState({
-    //   images: resp.data.hits,
-    // });
   }
 
   render() {
+    const { loading, images } = this.state;
     return (
       <Layout>
         <Searchbar changeQuery={this.changeQuery} />
-        <Gallery images={this.state.images} />
+        {loading ? (
+          <Grid
+            height="350"
+            width="350"
+            color="#4fa94d"
+            ariaLabel="grid-loading"
+            radius="12.5"
+            wrapperStyle={{
+              padding: '50px',
+              justifyContent: 'space-around',
+            }}
+            wrapperClass=""
+            visible={true}
+          />
+        ) : (
+          <Gallery images={images} />
+        )}
         {/* <Loader /> */}
         <Button handleLoadMoreButton={this.handleLoadMoreButton} />
         {/* <Modal /> */}
