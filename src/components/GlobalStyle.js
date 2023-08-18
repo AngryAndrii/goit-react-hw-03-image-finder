@@ -18,4 +18,8 @@ code {
 button {
   cursor: pointer;
 }
+
+ul {
+  list-style: none;
+}
 `;
