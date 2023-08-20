@@ -13,6 +13,7 @@ export class App extends Component {
     images: [],
     page: 1,
     loading: false,
+    loadMore: false,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -25,10 +26,11 @@ export class App extends Component {
         loading: true,
       });
       let response = await apiQuery(query, page);
-      this.setState({
-        images: [...images, ...response.hits],
+      this.setState(prev => ({
+        images: [...prev.images, ...response.hits],
+        loadMore: this.state.page < Math.ceil(response.totalHits / 6),
         loading: false,
-      });
+      }));
     }
   }
 
@@ -47,12 +49,16 @@ export class App extends Component {
   };
 
   render() {
-    const { loading, images } = this.state;
+    const { loading, images, loadMore } = this.state;
     return (
       <Layout>
         <Searchbar changeQuery={this.changeQuery} />
         {loading ? <Loader /> : <Gallery images={images} />}
-        <Button handleLoadMoreButton={this.handleLoadMoreButton} />
+        {!loadMore ? (
+          <></>
+        ) : (
+          <Button handleLoadMoreButton={this.handleLoadMoreButton} />
+        )}
       </Layout>
     );
   }
