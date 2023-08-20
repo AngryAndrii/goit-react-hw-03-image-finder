@@ -35,7 +35,7 @@ export class App extends Component {
       }
       this.setState(prevState => ({
         images: [...prevState.images, ...response.hits],
-        loadMore: page < Math.ceil(response.totalHits / 6),
+        loadMore: page < Math.ceil(response.totalHits / 12),
         loading: false,
       }));
     }
