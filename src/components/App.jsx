@@ -6,6 +6,7 @@ import { Layout } from './Layout.styled';
 import { Searchbar } from './Searchbar/Searchbar';
 import { apiQuery } from './api';
 import { Loader } from './Loader/Loader';
+import toast, { Toaster } from 'react-hot-toast';
 
 export class App extends Component {
   state = {
@@ -16,16 +17,22 @@ export class App extends Component {
     loadMore: false,
   };
 
+  noParams = () => toast.error('Please enter search parameters!');
+  noImgs = () => toast.error('No images were found for your request');
+
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
     if (query === '') {
-      console.log('no query');
+      this.noParams();
     }
     if (page !== prevState.page || query !== prevState.query) {
       this.setState({
         loading: true,
       });
       let response = await apiQuery(query, page);
+      if (response.hits.length === 0) {
+        this.noImgs();
+      }
       this.setState(prevState => ({
         images: [...prevState.images, ...response.hits],
         loadMore: page < Math.ceil(response.totalHits / 6),
@@ -59,6 +66,7 @@ export class App extends Component {
         ) : (
           <Button handleLoadMoreButton={this.handleLoadMoreButton} />
         )}
+        <Toaster position="top-left" reverseOrder={false} />
       </Layout>
     );
   }
