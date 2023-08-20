@@ -23,8 +23,8 @@ export const ModalWindow = ({ largeUrl, isModalOpen, onClose }) => {
       style={customStyles}
       contentLabel="Example Modal"
     >
-      <StyledButton onClick={onClose}>close</StyledButton>
       <Wrapper>
+        <StyledButton onClick={onClose}>close</StyledButton>
         <img src={largeUrl} alt="" />
       </Wrapper>
     </Modal>

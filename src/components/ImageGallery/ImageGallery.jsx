@@ -1,12 +1,13 @@
 import { GalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { List } from './ImageGallery.styled';
+import { nanoid } from 'nanoid';
 
 export const Gallery = ({ images }) => {
   return (
     <List>
-      {images.map(({ id, webformatURL, largeImageURL }) => {
+      {images.map(({ webformatURL, largeImageURL }) => {
         return (
-          <li key={id}>
+          <li key={nanoid()}>
             <GalleryItem
               webformatURL={webformatURL}
               largeImageURL={largeImageURL}
