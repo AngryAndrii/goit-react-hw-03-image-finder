@@ -7,6 +7,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { apiQuery } from './api';
 import { Loader } from './Loader/Loader';
 import toast, { Toaster } from 'react-hot-toast';
+import ScrollToTop from 'react-scroll-to-top';
 
 export class App extends Component {
   state = {
@@ -19,28 +20,35 @@ export class App extends Component {
 
   noParams = () => toast.error('Please enter search parameters!');
   noImgs = () => toast.error('No images were found for your request');
+  error404 = () => toast.error("Error happened. let's try later");
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(_, prevState) {
     const { query, page } = this.state;
-    if (query === '') {
+
+    const queryOnRequest = query.slice(query.indexOf('/') + 1);
+
+    if (queryOnRequest === '') {
       this.noParams();
+      return;
     }
+
     if (page !== prevState.page || query !== prevState.query) {
       this.setState({
         loading: true,
       });
-
-      const queryOnRequest = query.slice(query.indexOf('/') + 1);
-
-      let response = await apiQuery(queryOnRequest, page);
-      if (response.hits.length === 0) {
-        this.noImgs();
+      try {
+        let response = await apiQuery(queryOnRequest, page);
+        if (response.hits.length === 0) {
+          this.noImgs();
+        }
+        this.setState(prevState => ({
+          images: [...prevState.images, ...response.hits],
+          loadMore: page < Math.ceil(response.totalHits / 12),
+          loading: false,
+        }));
+      } catch (error) {
+        this.error404();
       }
-      this.setState(prevState => ({
-        images: [...prevState.images, ...response.hits],
-        loadMore: page < Math.ceil(response.totalHits / 12),
-        loading: false,
-      }));
     }
   }
 
@@ -71,6 +79,8 @@ export class App extends Component {
             <Button handleLoadMoreButton={this.handleLoadMoreButton} />
           )}
           <Toaster position="top-left" reverseOrder={false} />
+          <div style={{ marginTop: '30vh' }} />
+          <ScrollToTop smooth />
         </Layout>
       </>
     );

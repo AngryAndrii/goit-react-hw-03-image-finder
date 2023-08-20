@@ -3,11 +3,14 @@ import { styled } from 'styled-components';
 export const Wrapper = styled.div`
   /* position: relative; */
   img {
+    width: 100%;
     max-width: 100%;
+    object-fit: contain;
   }
   max-height: 90vh;
-  width: 80vw;
+  width: 75vw;
   overflow: hidden;
+
   /* padding: 30px 20px; */
 `;
 
