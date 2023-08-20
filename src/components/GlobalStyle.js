@@ -17,7 +17,19 @@ code {
 }
 button {
   cursor: pointer;
+  border: 1px solid black;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  transition: all 200ms ease-in-out;
+  font-size: 16px;
 }
+
+  button:is(:hover, :active, :focus) {
+    border: 1px solid orange;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  }
 
 ul {
   list-style: none;

@@ -61,16 +61,18 @@ export class App extends Component {
   render() {
     const { loading, images, loadMore } = this.state;
     return (
-      <Layout>
+      <>
         <Searchbar changeQuery={this.changeQuery} />
-        {loading ? <Loader /> : <Gallery images={images} />}
-        {!loadMore ? (
-          <></>
-        ) : (
-          <Button handleLoadMoreButton={this.handleLoadMoreButton} />
-        )}
-        <Toaster position="top-left" reverseOrder={false} />
-      </Layout>
+        <Layout>
+          {loading ? <Loader /> : <Gallery images={images} />}
+          {!loadMore ? (
+            <></>
+          ) : (
+            <Button handleLoadMoreButton={this.handleLoadMoreButton} />
+          )}
+          <Toaster position="top-left" reverseOrder={false} />
+        </Layout>
+      </>
     );
   }
 }
