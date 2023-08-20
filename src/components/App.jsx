@@ -29,7 +29,10 @@ export class App extends Component {
       this.setState({
         loading: true,
       });
-      let response = await apiQuery(query, page);
+
+      const queryOnRequest = query.slice(query.indexOf('/') + 1);
+
+      let response = await apiQuery(queryOnRequest, page);
       if (response.hits.length === 0) {
         this.noImgs();
       }
@@ -43,7 +46,7 @@ export class App extends Component {
 
   changeQuery = query => {
     this.setState({
-      query: query,
+      query: `${Date.now()}/${query}`,
       images: [],
       page: 1,
     });
