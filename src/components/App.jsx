@@ -18,6 +18,9 @@ export class App extends Component {
 
   async componentDidUpdate(prevProps, prevState) {
     const { query, page } = this.state;
+    if (query === '') {
+      console.log('no query');
+    }
     if (page !== prevState.page || query !== prevState.query) {
       this.setState({
         loading: true,
@@ -41,7 +44,7 @@ export class App extends Component {
 
   handleLoadMoreButton = () => {
     this.setState(prevstate => ({
-      page: (prevstate.page += 1),
+      page: prevstate.page + 1,
     }));
   };
 
