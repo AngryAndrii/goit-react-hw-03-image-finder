@@ -5,7 +5,7 @@ import { Gallery } from './ImageGallery/ImageGallery';
 import { Layout } from './Layout.styled';
 import { Searchbar } from './Searchbar/Searchbar';
 import { apiQuery } from './api';
-import { Grid } from 'react-loader-spinner';
+import { Loader } from './Loader/Loader';
 
 export class App extends Component {
   state = {
@@ -36,6 +36,7 @@ export class App extends Component {
     this.setState({
       query: query,
       images: [],
+      page: 1,
     });
   };
 
@@ -50,27 +51,8 @@ export class App extends Component {
     return (
       <Layout>
         <Searchbar changeQuery={this.changeQuery} />
-        {loading ? (
-          <Grid
-            height="350"
-            width="350"
-            color="#4fa94d"
-            ariaLabel="grid-loading"
-            radius="12.5"
-            wrapperStyle={{
-              padding: '50px',
-              justifyContent: 'space-around',
-            }}
-            wrapperClass=""
-            visible={true}
-          />
-        ) : (
-          <Gallery images={images} />
-        )}
-        {/* <Loader /> */}
+        {loading ? <Loader /> : <Gallery images={images} />}
         <Button handleLoadMoreButton={this.handleLoadMoreButton} />
-        {/* <Modal /> */}
-        {/* <GalleryItem /> */}
       </Layout>
     );
   }
