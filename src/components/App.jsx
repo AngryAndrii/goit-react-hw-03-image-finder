@@ -17,18 +17,15 @@ export class App extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    const { query, images, page } = this.state;
-    if (
-      this.state.page !== prevState.page ||
-      this.state.query !== prevState.query
-    ) {
+    const { query, page } = this.state;
+    if (page !== prevState.page || query !== prevState.query) {
       this.setState({
         loading: true,
       });
       let response = await apiQuery(query, page);
-      this.setState(prev => ({
-        images: [...prev.images, ...response.hits],
-        loadMore: this.state.page < Math.ceil(response.totalHits / 6),
+      this.setState(prevState => ({
+        images: [...prevState.images, ...response.hits],
+        loadMore: page < Math.ceil(response.totalHits / 6),
         loading: false,
       }));
     }
